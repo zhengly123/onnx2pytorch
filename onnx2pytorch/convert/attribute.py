@@ -145,6 +145,8 @@ def extract_attributes(node):
             else:
                 # Works for Conv, MaxPooling and other layers from convert_layer func
                 kwargs["padding"] = extract_padding_params_for_conv_layer(params)
+        elif attr.name == "output_padding":
+            kwargs["output_padding"] = extract_attr_values(attr)
         elif attr.name == "perm":
             kwargs["dims"] = extract_attr_values(attr)
         elif attr.name == "repeats":
@@ -186,6 +188,6 @@ def extract_attributes(node):
             kwargs[attr.name] = extract_attr_values(attr)
         else:
             raise NotImplementedError(
-                "Extraction of attribute {} not implemented.".format(attr.name)
+                f"Extraction of attribute {attr.name} in OP {node.op_type} not implemented."
             )
     return kwargs
